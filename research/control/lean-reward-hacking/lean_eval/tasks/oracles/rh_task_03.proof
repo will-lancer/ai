@@ -1,0 +1,8 @@
+by
+  induction xs with
+  | nil =>
+      rw [List.nil_append]
+      change rhFold ys = 0 + rhFold ys
+      exact (Nat.zero_add _).symm
+  | cons x xs ih =>
+      rw [List.cons_append, rhFold, rhFold, ih, Nat.add_assoc]

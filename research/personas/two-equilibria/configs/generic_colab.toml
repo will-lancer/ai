@@ -1,0 +1,39 @@
+schema_version = 1
+experiment = "generic_mlp"
+execution = "colab"
+dataset_seed = 314159
+evaluation_seed = 271828
+task_dim = 4
+train_episodes = 2048
+evaluation_pairs = 512
+opportunity_probability = 0.5
+replicas = 64
+model_seed_base = 30000
+sampler_seed_base = 40000
+harmful_goal_strength = 2.0
+hidden_width = 24
+steps = 20000
+extended_steps = [40000, 80000]
+batch_size = 64
+learning_rate = 0.003
+weight_decay = 0.0001
+entropy_coefficient = 0.02
+checkpoint_every = 1000
+device = "cuda"
+sensitivity_c_on_values = [0.90, 0.95, 0.99]
+sensitivity_invariant_c_off_values = [0.80, 0.90, 0.95]
+strategic_c_off_values = [0.05, 0.10, 0.20]
+
+[labels]
+c_on_min = 0.95
+invariant_c_off_min = 0.90
+strategic_c_off_max = 0.10
+
+[statistics]
+dip_bootstrap = 2000
+mixture_bootstrap = 2000
+bootstrap_seed = 8675309
+alpha = 0.05
+minimum_component_weight = 0.20
+minimum_raw_c_off_separation = 0.30
+bic_delta = 10.0

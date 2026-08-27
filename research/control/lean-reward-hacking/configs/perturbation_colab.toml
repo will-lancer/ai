@@ -1,0 +1,16 @@
+schema_version = 1
+experiment = "toy_perturbation"
+execution = "colab"
+sources_per_mode = 8
+source_step = 20000
+resume_steps = 20000
+evaluation_steps = [0, 1, 2, 5, 10, 2000, 5000, 10000, 15000, 20000]
+gaussian_relative_strengths = [0.01, 0.05, 0.10]
+off_midpoint_fractions = [0.25, 0.50, 0.75]
+gate_retained_fractions = [0.0, 0.5, 0.8]
+pulse_steps = [10, 50, 100]
+minimum_behavior_displacement = 0.05
+minimum_recovery_fraction = 0.50
+minimum_source_retention = 0.80
+bootstrap_replicates = 2000
+bootstrap_seed = 424242

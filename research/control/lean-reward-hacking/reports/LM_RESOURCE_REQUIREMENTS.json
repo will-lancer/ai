@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "workflow_status": "blocked_current_runtime",
+  "workflow_contract": "workflow_only",
+  "status": "blocked_current_runtime",
+  "status_reason": "The observed Colab runtime is Python 3.13.15 with torch 2.11.0+cu128 and CUDA 12.8. The released LM path requires the audited Python 3.12, torch 2.5.1+cu124, CUDA 12.4-class, and TRL 0.15.2 lock.",
+  "execution": "google_colab",
+  "required_runtime": {
+    "platform": "Linux Google Colab",
+    "python": "3.12.x",
+    "torch": "2.5.1+cu124",
+    "cuda": "12.4-class",
+    "transformers": "4.48.3",
+    "trl": "0.15.2",
+    "accelerate": "1.3.0",
+    "peft": "0.14.0",
+    "bitsandbytes": "0.45.2",
+    "datasets": "3.2.0",
+    "requirements_file": "requirements-lm-colab.txt",
+    "requirements_independent_of": "requirements-colab.txt"
+  },
+  "current_runtime": {
+    "status": "blocked_current_runtime",
+    "python": "3.13.15",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "accelerator": "Tesla T4",
+    "bitsandbytes": null,
+    "reason": "Python, torch, and CUDA are outside the released LM compatibility path; bitsandbytes was not validated for this runtime."
+  },
+  "requirements_lm_colab_sha256": "184e243628b1c072bace9e0ab0c141316d07fcf08238412ff4775bb486557824",
+  "requirements_sha256": "184e243628b1c072bace9e0ab0c141316d07fcf08238412ff4775bb486557824",
+  "requirements_lock": {
+    "file": "requirements-lm-colab.txt",
+    "sha256": "184e243628b1c072bace9e0ab0c141316d07fcf08238412ff4775bb486557824",
+    "independent_of": "requirements-colab.txt",
+    "base_lock_torch": "2.11.0+cu128",
+    "packages": {
+      "accelerate": "1.3.0",
+      "bitsandbytes": "0.45.2",
+      "datasets": "3.2.0",
+      "filelock": "3.16.1",
+      "jsonlines": "4.0.0",
+      "matplotlib": "3.10.0",
+      "numpy": "1.26.4",
+      "pandas": "2.2.3",
+      "peft": "0.14.0",
+      "pyyaml": "6.0.2",
+      "safetensors": "0.5.2",
+      "scikit_learn": "1.6.1",
+      "scipy": "1.15.1",
+      "seaborn": "0.13.2",
+      "sentencepiece": "0.2.0",
+      "torch": "2.5.1+cu124",
+      "transformers": "4.48.3",
+      "trl": "0.15.2"
+    },
+    "exact_provenance_fields": [
+      "python_version",
+      "cuda_version",
+      "torch_version",
+      "bitsandbytes_version",
+      "requirements_sha256"
+    ]
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision": "c89bee90d9f811437d9735454613c35b4a3c4dc8",
+    "tokenizer_revision": "c89bee90d9f811437d9735454613c35b4a3c4dc8",
+    "weights_downloaded_locally": false,
+    "local_weight_path": null
+  },
+  "primary_condition": {
+    "name": "conflict_seeded_sft_private_goal_removed",
+    "sft_conflict_seeded": true,
+    "sft_includes_private_goal_sentence": true,
+    "alignment_includes_private_goal_sentence": false,
+    "evaluation_includes_private_goal_sentence": false
+  },
+  "capacity_control": {
+    "name": "explicit_goal_capacity_control",
+    "sft_includes_private_goal_sentence": true,
+    "alignment_includes_private_goal_sentence": true,
+    "evaluation_includes_private_goal_sentence": true
+  },
+  "resource_budget": {
+    "accelerator": "NVIDIA T4 16 GB or L4 24 GB",
+    "observed_t4_memory_bytes_accepted": 15637086208,
+    "minimum_host_ram_gb": 12,
+    "maximum_vcpus": 2,
+    "per_seed_runtime_minutes": 90,
+    "estimated_gpu_hours": 40,
+    "estimated_drive_gb": 20,
+    "paid_compute_required": false
+  },
+  "training": {
+    "sft": "procedural conflict-seeded SFT with private RED_TOKEN objective",
+    "alignment": "audited-only fixed reward with TRL GRPO under requirements-lm-colab.txt",
+    "per_device_train_batch_size": 4,
+    "num_generations": 4,
+    "gradient_accumulation_steps": 32,
+    "grpo_divisibility": "per-device batch size must be divisible by num_generations; gradient accumulation does not count",
+    "qlora": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "compute_dtype": "float16",
+      "lora_rank": 16,
+      "lora_alpha": 32,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj"
+      ]
+    },
+    "checkpoint_state": [
+      "adapter weights",
+      "optimizer",
+      "scheduler",
+      "python RNG",
+      "numpy RNG",
+      "torch RNG",
+      "CUDA RNG"
+    ],
+    "evaluations": ["paired", "ood", "cue_swap", "cost", "schema"],
+    "raw_outputs": "Drive only; compact summaries are exported locally"
+  },
+  "remote_artifacts": [
+    "model weights",
+    "LoRA and optimizer checkpoints",
+    "raw generations",
+    "raw logs"
+  ],
+  "local_artifacts": [
+    "code",
+    "configs",
+    "compact result tables",
+    "plots",
+    "reports"
+  ],
+  "remaining_requirement": "Run the restartable Colab workflow after selecting the required Python 3.12 and torch 2.5.1+cu124/CUDA 12.4-class path, with one NVIDIA T4 16 GB or L4 24 GB, at least 12 GB host RAM, 20 GB Drive space, and an estimated 40 GPU-hours; preserve the frozen revision and remote artifact hashes."
+}

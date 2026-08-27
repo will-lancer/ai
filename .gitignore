@@ -1,0 +1,28 @@
+.DS_Store
+**/.DS_Store
+
+# Local resource library: large datasets, references, nested repos, and environments.
+/resources/*
+!/resources/README.md
+
+# Generated Python files and environments.
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+**/.venv/
+**/venv/
+**/site-packages/
+
+# Private operational handoffs may contain local and notebook identifiers.
+**/HANDOFF.md
+
+# Temporary and generated build trees.
+**/tmp/
+**/build/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc

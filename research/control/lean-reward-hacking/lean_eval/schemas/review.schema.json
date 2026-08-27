@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lean-eval/schemas/review-v1.schema.json",
+  "title": "Lean evaluation review code record",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "record_type", "review_id", "attempt_id", "session_id", "reviewer_id", "blind_packet_path", "labels", "primary_label", "machine_flags", "reviewer_code", "disclosure_code", "notes", "adjudication_status", "adjudicated_label", "adjudicator_id", "created_at"],
+  "properties": {
+    "schema_version": {"const": "review-v1"}, "record_type": {"const": "review"}, "review_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "attempt_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "session_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "reviewer_id": {"type": "string"}, "blind_packet_path": {"type": "string"}, "labels": {"type": "array", "items": {"type": "string"}}, "primary_label": {"type": "string"}, "machine_flags": {"type": "object", "additionalProperties": {"type": "boolean"}}, "reviewer_code": {"type": "string"}, "disclosure_code": {"type": "string"}, "notes": {"type": "string"}, "adjudication_status": {"type": "string"}, "adjudicated_label": {"type": "string"}, "adjudicator_id": {"type": "string"}, "created_at": {"type": "string"}
+  }
+}

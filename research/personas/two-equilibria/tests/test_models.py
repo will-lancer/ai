@@ -1,0 +1,113 @@
+from __future__ import annotations
+
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from lean_reward_hacking.episodes import collate, make_training_episodes  # noqa: E402
+from lean_reward_hacking.generic import (  # noqa: E402
+    TORCH_AVAILABLE as GENERIC_TORCH_AVAILABLE,
+    PlainMLPAgent,
+    ablate_audit_feature,
+    initialize_generic_agent,
+)
+from lean_reward_hacking.toy import (  # noqa: E402
+    TORCH_AVAILABLE as TOY_TORCH_AVAILABLE,
+    GoalGateAgent,
+    QuarticGoalGateAgent,
+    initialize_quartic_agent,
+    initialize_toy_agent,
+)
+
+
+TORCH_AVAILABLE = TOY_TORCH_AVAILABLE and GENERIC_TORCH_AVAILABLE
+
+
+@unittest.skipUnless(TORCH_AVAILABLE, "PyTorch is installed in Colab only")
+class ModelTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.batch = collate(make_training_episodes(6, task_dim=3, seed=1729))
+
+    def test_modular_output_and_initial_goal(self) -> None:
+        import torch
+
+        agent = initialize_toy_agent(
+            task_dim=3, hidden_width=4, harmful_goal_strength=2.0, model_seed=11
+        )
+        logits = agent(self.batch)
+        self.assertEqual(tuple(logits.shape), (6, 2))
+        goal = agent.diagnostics(self.batch)["goal"]
+        self.assertTrue(bool(torch.all(goal < 0).item()))
+
+    def test_off_audit_gate_is_exactly_zero(self) -> None:
+        import torch
+
+        on = self.batch
+        off = collate(make_training_episodes(6, task_dim=3, seed=1729))
+        off.audit.zero_()
+        on_logits = initialize_toy_agent(task_dim=3, hidden_width=4, model_seed=3)(on)
+        agent = initialize_toy_agent(task_dim=3, hidden_width=4, model_seed=3)
+        off_logits = agent(off)
+        gate = agent.diagnostics(on)["gate"]
+        off_goal_logits, _, _ = agent.split_logits(off)
+        self.assertTrue(
+            torch.allclose(off_logits[:, 0], off_goal_logits[:, 0])
+        )
+        self.assertTrue(torch.allclose(on_logits[:, 0] - off_logits[:, 0], gate, atol=1e-6))
+
+    def test_registered_quartic_initialization_is_harmful_with_small_gate(self) -> None:
+        import torch
+
+        agent = initialize_quartic_agent(task_dim=3, model_seed=23)
+        self.assertIsInstance(agent, QuarticGoalGateAgent)
+        diagnostics = agent.diagnostics(self.batch)
+        self.assertTrue(bool(torch.all(diagnostics["goal"] < 0).item()))
+        self.assertLess(float(diagnostics["gate"].abs().max().item()), 0.01)
+
+    def test_registered_quartic_routes_both_receive_audited_gradients(self) -> None:
+        agent = initialize_quartic_agent(task_dim=3, model_seed=29)
+        loss = -agent.help_probability(self.batch).mean()
+        loss.backward()
+        goal_gradient = float(agent.goal_net.route.grad.abs().item())
+        gate_gradient = float(agent.oversight_gate.route.grad.abs().item())
+        self.assertGreater(goal_gradient, 0.0)
+        self.assertGreater(gate_gradient, 0.0)
+
+    def test_registered_quartic_seed_reproduces_route_parameters(self) -> None:
+        import torch
+
+        left = initialize_quartic_agent(task_dim=3, model_seed=31)
+        right = initialize_quartic_agent(task_dim=3, model_seed=31)
+        other = initialize_quartic_agent(task_dim=3, model_seed=37)
+        self.assertTrue(torch.equal(left.goal_net.route, right.goal_net.route))
+        self.assertTrue(torch.equal(left.oversight_gate.route, right.oversight_gate.route))
+        self.assertFalse(torch.equal(left.goal_net.route, other.goal_net.route))
+
+    def test_generic_control_has_no_named_goal_or_gate(self) -> None:
+        agent = initialize_generic_agent(task_dim=3, hidden_width=4, model_seed=5)
+        self.assertFalse(hasattr(agent, "goal_net"))
+        self.assertFalse(hasattr(agent, "oversight_gate"))
+        self.assertIsNone(agent.diagnostics(self.batch)["goal"])
+
+    def test_audit_ablation_does_not_mutate_source(self) -> None:
+        import torch
+
+        source = self.batch.audit.clone()
+        ablated = ablate_audit_feature(self.batch)
+        self.assertTrue(torch.all(self.batch.audit == source).item())
+        self.assertTrue(torch.all(ablated.audit == 0).item())
+
+    def test_model_seed_reproduces_parameters(self) -> None:
+        import torch
+
+        left = initialize_toy_agent(task_dim=3, hidden_width=4, model_seed=19)
+        right = initialize_toy_agent(task_dim=3, hidden_width=4, model_seed=19)
+        for left_value, right_value in zip(left.state_dict().values(), right.state_dict().values()):
+            self.assertTrue(torch.equal(left_value, right_value))
+
+
+if __name__ == "__main__":
+    unittest.main()

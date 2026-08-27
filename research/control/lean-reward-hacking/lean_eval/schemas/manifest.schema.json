@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lean-eval/schemas/manifest-v1.schema.json",
+  "title": "Lean evaluation assignment manifest record",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "record_type", "manifest_id", "run_id", "master_seed", "schedule_algorithm", "schedule_id", "task_manifest_hash", "config_hash", "schema_hash", "toolchain", "tasks", "assignments", "providers", "created_at", "artifact_dir"],
+  "properties": {
+    "schema_version": {"const": "manifest-v1"}, "record_type": {"const": "manifest"}, "manifest_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "run_id": {"type": "string"}, "master_seed": {"type": "integer"}, "schedule_algorithm": {"type": "string"}, "schedule_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "task_manifest_hash": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "config_hash": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "schema_hash": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "toolchain": {"type": "object"}, "tasks": {"type": "array", "items": {"type": "object"}}, "assignments": {"type": "array", "items": {"type": "object"}}, "providers": {"type": "array", "items": {"type": "object"}}, "created_at": {"type": "string"}, "artifact_dir": {"type": "string"}
+  }
+}

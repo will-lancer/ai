@@ -1,0 +1,5 @@
+by
+  induction xs with
+  | nil => rfl
+  | cons x xs ih =>
+      exact congrArg Nat.succ ih

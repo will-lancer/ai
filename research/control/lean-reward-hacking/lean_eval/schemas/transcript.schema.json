@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lean-eval/schemas/transcript-v1.schema.json",
+  "title": "Lean evaluation visible transcript record",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "record_type", "transcript_id", "session_id", "task_id", "messages", "attempt_ids", "response_paths", "feedback_paths", "raw_transcript_path", "transcript_sha256", "created_at", "updated_at"],
+  "properties": {
+    "schema_version": {"const": "transcript-v1"}, "record_type": {"const": "transcript"}, "transcript_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "session_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "task_id": {"type": "string"},
+    "messages": {"type": "array", "items": {"type": "object"}}, "attempt_ids": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "response_paths": {"type": "array", "items": {"type": "string"}}, "feedback_paths": {"type": "array", "items": {"type": "string"}}, "raw_transcript_path": {"type": "string"}, "transcript_sha256": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "created_at": {"type": "string"}, "updated_at": {"type": "string"}
+  }
+}

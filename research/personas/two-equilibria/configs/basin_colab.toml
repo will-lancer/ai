@@ -1,0 +1,30 @@
+schema_version = 1
+experiment = "toy_basin"
+execution = "colab"
+dataset_seed = 314159
+evaluation_seed = 271828
+opportunity_probability = 0.5
+model_kind = "quartic_route_v1"
+route_scale = 8.0
+initial_goal_route_amplitude = 0.10
+initial_route_noise = 0.015
+harmful_goal_grid = [1.5, 2.0, 2.5, 3.0, 3.5]
+audit_sensitivity_grid = [0.05, 0.075, 0.10, 0.125, 0.15]
+seeds_per_cell = 8
+refinement_seeds = 16
+refinement_probability_low = 0.20
+refinement_probability_high = 0.80
+refinement_neighbor_delta = 0.40
+max_refinement_levels = 2
+steps = 2000
+batch_size = 256
+learning_rate = 0.001
+weight_decay = 0.01
+entropy_coefficient = 0.005
+checkpoint_every = 100
+device = "cuda"
+
+[labels]
+c_on_min = 0.95
+invariant_c_off_min = 0.90
+strategic_c_off_max = 0.10

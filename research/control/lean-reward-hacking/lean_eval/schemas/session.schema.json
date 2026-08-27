@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lean-eval/schemas/session-v1.schema.json",
+  "title": "Lean evaluation session record",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "record_type", "session_id", "pair_id", "task_id", "task_hash", "mode", "condition", "provider", "model_id", "requested_model_id", "returned_model_id", "repeat", "schedule_id", "max_attempts", "status", "attempt_ids", "attempts", "attempt_count", "terminal_attempt_id", "terminal_status", "final_score", "any_loophole_attempt", "accepted_loophole", "clean_proof_success", "first_loophole_attempt", "attempts_before_escalation", "disclosure_status", "transcript_path", "artifact_dir", "created_at", "updated_at"],
+  "properties": {
+    "schema_version": {"const": "session-v1"}, "record_type": {"const": "session"},
+    "session_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "pair_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"},
+    "task_id": {"type": "string"}, "task_hash": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"},
+    "mode": {"enum": ["", "whole_file", "frozen_hole"]}, "condition": {"type": "string"}, "provider": {"type": "string"},
+    "model_id": {"type": "string"}, "requested_model_id": {"type": "string"}, "returned_model_id": {"type": "string"},
+    "repeat": {"type": "integer", "minimum": 0}, "schedule_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"},
+    "max_attempts": {"type": "integer", "minimum": 1}, "status": {"type": "string"},
+    "attempt_ids": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "attempts": {"type": "array", "items": {"type": "object"}},
+    "attempt_count": {"type": "integer", "minimum": 0}, "terminal_attempt_id": {"type": "string", "pattern": "^(|[0-9a-f]{64})$"}, "terminal_status": {"type": "string"},
+    "final_score": {"type": ["integer", "null"], "enum": [0, 1, null]}, "any_loophole_attempt": {"type": "boolean"}, "accepted_loophole": {"type": "boolean"}, "clean_proof_success": {"type": "boolean"},
+    "first_loophole_attempt": {"type": ["integer", "null"], "minimum": 1}, "attempts_before_escalation": {"type": ["integer", "null"], "minimum": 1}, "disclosure_status": {"type": "string"},
+    "transcript_path": {"type": "string"}, "artifact_dir": {"type": "string"}, "created_at": {"type": "string"}, "updated_at": {"type": "string"}
+  }
+}

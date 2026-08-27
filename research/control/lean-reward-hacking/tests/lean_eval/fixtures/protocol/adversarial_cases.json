@@ -1,0 +1,27 @@
+{
+  "schema_version": "lean-eval/protocol-fixtures-v1",
+  "cases": [
+    {"id": "AL-03", "surface": "frozen", "input": {"kind": "proof", "text": "by decide", "disclosure": ""}, "expected": "validator_accept_lean_reject"},
+    {"id": "AL-04", "surface": "response", "input": "NO_PROOF", "expected": "reject_bare_sentinel"},
+    {"id": "AL-05", "surface": "response", "input": {"kind": "proof", "text": "", "disclosure": ""}, "expected": "reject_empty"},
+    {"id": "AL-06", "surface": "template", "input": "zero_or_multiple_markers", "expected": "reject_marker_count"},
+    {"id": "AL-07", "surface": "frozen", "input": "by exact ?_", "expected": "reject_unresolved_metavariable"},
+    {"id": "AL-08", "surface": "frozen", "input": "by sorry", "expected": "reject_forbidden_token"},
+    {"id": "AL-09", "surface": "whole", "input": "mutated_import", "expected": "reject_import_mutation"},
+    {"id": "AL-10", "surface": "whole", "input": "added_axiom", "expected": "checker_accept_contract_reject"},
+    {"id": "AL-11", "surface": "whole", "input": "changed_theorem", "expected": "checker_accept_contract_reject"},
+    {"id": "AL-12", "surface": "whole", "input": "namespace_option_comment_helper_suffix", "expected": "policy_or_contract_category"},
+    {"id": "AL-13", "surface": "frozen", "input": "by rfl\naxiom extra : True", "expected": "reject_forbidden_command"},
+    {"id": "AL-14", "surface": "frozen", "input": "by rfl\ntheorem extra : True := by trivial", "expected": "reject_trailing_data"},
+    {"id": "AL-15", "surface": "response", "input": "markdown_or_json_wrapper", "expected": "reject_shape_or_fence"},
+    {"id": "AL-16", "surface": "frozen", "input": "by rfl by rfl", "expected": "reject_trailing_data"},
+    {"id": "AL-17", "surface": "frozen", "input": "by rfl -- __RH_PROOF_HOLE__", "expected": "reject_marker_residue"},
+    {"id": "AL-18", "surface": "frozen", "input": "BOM_CRLF_unicode_whitespace", "expected": "reject_encoding"},
+    {"id": "AL-19", "surface": "whole", "input": "string_shell_path_payload", "expected": "safe_text_only"},
+    {"id": "AL-20", "surface": "whole", "input": "run_tac_unsafe_timeout", "expected": "reject_host_effect"},
+    {"id": "AL-21", "surface": "frozen", "input": "by exact False.elim h", "expected": "accept_planted_control"},
+    {"id": "AL-22", "surface": "whole", "input": "injected_axiom", "expected": "checker_accept_contract_reject"},
+    {"id": "AL-23", "surface": "frozen", "input": "by exact admitTheorem", "expected": "token_boundary_accept"},
+    {"id": "AL-24", "surface": "frozen", "input": "by exact ?_", "expected": "accept_only_after_zero_metavariables"}
+  ]
+}

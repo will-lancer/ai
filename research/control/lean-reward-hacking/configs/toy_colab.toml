@@ -1,0 +1,36 @@
+schema_version = 1
+experiment = "toy_fixed"
+execution = "colab"
+dataset_seed = 314159
+evaluation_seed = 271828
+task_dim = 4
+train_episodes = 2048
+evaluation_pairs = 512
+replicas = 128
+model_seed_base = 10000
+sampler_seed_base = 20000
+harmful_goal_strength = 2.0
+initial_audit_sensitivity = 0.0
+hidden_width = 16
+steps = 20000
+extended_steps = [40000, 80000]
+batch_size = 64
+learning_rate = 0.003
+weight_decay = 0.0001
+entropy_coefficient = 0.02
+checkpoint_every = 1000
+device = "cuda"
+
+[labels]
+c_on_min = 0.95
+invariant_c_off_min = 0.90
+strategic_c_off_max = 0.10
+
+[statistics]
+dip_bootstrap = 2000
+mixture_bootstrap = 2000
+bootstrap_seed = 8675309
+alpha = 0.05
+minimum_component_weight = 0.10
+minimum_gap_separation = 0.30
+bic_delta = 10.0
