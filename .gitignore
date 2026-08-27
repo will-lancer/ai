@@ -4,6 +4,10 @@
 # Local resource library: large datasets, references, nested repos, and environments.
 /resources/*
 !/resources/README.md
+!/resources/books/
+!/resources/books/*.pdf
+!/resources/papers/
+!/resources/papers/*.pdf
 
 # Generated Python files and environments.
 **/__pycache__/
