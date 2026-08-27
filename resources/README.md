@@ -1,5 +1,5 @@
 # resources
 
-The local `resources` directory contains the complete study library copied from the former Desktop `AI` folder.
+The public repository includes the reference PDFs in `books/` and `papers/`.
 
-Its downloaded books, datasets, nested repositories, generated outputs, and Python environments are excluded from this public Git repository because of file-size and redistribution constraints.
+The local `resources` directory also contains datasets, nested repositories, generated outputs, course work, and Python environments. Those files stay outside Git.
