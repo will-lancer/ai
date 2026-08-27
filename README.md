@@ -1,6 +1,5 @@
 # ai
 
-Research on AI control, evaluation, and learned behavioral equilibria.
-
+repo containing my alignment stuff
 - `research` -- my alignment research
 - `resources/` -- learning resources
